@@ -1,0 +1,47 @@
+alt+insert  直接生成class的方法
+
+mapper  数据库查询的接口java里面是interface   usermapper
+
+sprintboot所管理的类都有@Component接口，加上注解才能让springboot找到它
+
+pom.xml引入Mybatis依赖，写User的一个entity，第三步写了一个mapper（包含sql语句）
+
+@RestController标识这是一个接口，通过@GetMapping,@RestController是一个组合注解，包含@Controller和@ResponseBody
+
+ctrl+alt+o   去除无用的包
+
+@Mapper将 UserMapper的bean加入到springbootapplication
+
+@RequestMapping("xxx")通过xxx来访问这个接口
+
+springboot中的sql语句中的插入数据用#{  }来动态的插入
+
+@RequestBody 把前台的json对象转换未java对象
+
+UserMapper右键copy path
+
+不理解动态的sql语句
+
+@RequestParam接受user/page？pageNum=1&pageSize=10的值
+
+在前端不想展示password在User加入注解@JsonIgnore
+
+@Configuration是springboot里面提供配置的注解，配置想注入到springboot容器里需要加这个注解
+
+xml文件用于写动态的sql语句
+
+用mybatis-plus集成以后，可以把之前mybatis实现的用mybatis-plus来实现，可以不用写sql语句，集成中写好
+
+入门学习多用mybatis
+
+前端请求后端数据的方式，之前用的是fetch，对应mybatis
+
+
+
+
+
+
+
+
+
+
