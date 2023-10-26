@@ -1377,3 +1377,769 @@ class Triangle extends Shape {
 
 ### java 抽象类
 
+在 Java 语言中使用 abstract class 来定义抽象类。
+
+```java
+/* 文件名 : Employee.java */
+public abstract class Employee
+{
+   private String name;
+   private String address;
+   private int number;
+   public Employee(String name, String address, int number)
+   {
+      System.out.println("Constructing an Employee");
+      this.name = name;
+      this.address = address;
+      this.number = number;
+   }
+   public double computePay()
+   {
+     System.out.println("Inside Employee computePay");
+     return 0.0;
+   }
+   public void mailCheck()
+   {
+      System.out.println("Mailing a check to " + this.name
+       + " " + this.address);
+   }
+   public String toString()
+   {
+      return name + " " + address + " " + number;
+   }
+   public String getName()
+   {
+      return name;
+   }
+   public String getAddress()
+   {
+      return address;
+   }
+   public void setAddress(String newAddress)
+   {
+      address = newAddress;
+   }
+   public int getNumber()
+   {
+     return number;
+   }
+}
+```
+
+注意到该 Employee 类没有什么不同，尽管该类是抽象类，但是它仍然有 3 个成员变量，7 个成员方法和 1 个构造方法。
+
+```java
+/* 文件名 : AbstractDemo.java */
+public class AbstractDemo
+{
+   public static void main(String [] args)
+   {
+      /* 以下是不允许的，会引发错误 */
+      Employee e = new Employee("George W.", "Houston, TX", 43);
+ 
+      System.out.println("\n Call mailCheck using Employee reference--");
+      e.mailCheck();
+    }
+}
+```
+
+当你尝试编译 AbstractDemo 类时，会产生如下错误：
+
+```java
+Employee.java:46: Employee is abstract; cannot be instantiated
+      Employee e = new Employee("George W.", "Houston, TX", 43);
+                   ^
+1 error
+
+```
+
+#### 抽象方法
+
+Abstract 关键字同样可以用来声明抽象方法，抽象方法只包含一个方法名，而没有方法体。
+
+抽象方法没有定义，方法名后面直接跟一个分号，而不是花括号。
+
+```java
+public abstract class Employee
+{
+   private String name;
+   private String address;
+   private int number;
+   
+   public abstract double computePay();
+   
+   //其余代码
+}
+```
+
+声明抽象方法会造成以下两个结果：
+
+- 如果一个类包含抽象方法，那么该类必须是抽象类。
+- 任何子类必须重写父类的抽象方法，或者声明自身为抽象类。
+
+总结:
+
+- 1. 抽象类不能被实例化(初学者很容易犯的错)，如果被实例化，就会报错，编译无法通过。只有抽象类的非抽象子类可以创建对象。
+- 2. 抽象类中不一定包含抽象方法，但是有抽象方法的类必定是抽象类。
+- 3. 抽象类中的抽象方法只是声明，不包含方法体，就是不给出方法的具体实现也就是方法的具体功能。
+- 4. 构造方法，类方法（用 static 修饰的方法）不能声明为抽象方法。
+- 5. 抽象类的子类必须给出抽象类中的抽象方法的具体实现，除非该子类也是抽象类。
+
+#### 抽象类和接口的区别
+
+**语法层面上的区别**
+
+-  1）抽象类可以提供成员方法的实现细节，而接口中只能存在public abstract 方法；
+-  2）抽象类中的成员变量可以是各种类型的，而接口中的成员变量只能是public static final类型的；
+-  3）接口中不能含有静态代码块以及静态方法，而抽象类可以有静态代码块和静态方法；
+-  4）一个类只能继承一个抽象类，而一个类却可以实现多个接口。
+
+```java
+abstract class Door {
+    public abstract void open();
+    public abstract void close();
+}
+```
+
+或者:
+
+```java
+interface Door {
+    public abstract void open();
+    public abstract void close();
+}
+```
+
+ Door 的 open() 、close() 和 alarm() 根本就属于两个不同范畴内的行为，open() 和 close() 属于门本身固有的行为特性，而 alarm() 属于延伸的附加行为。因此最好的解决办法是单独将报警设计为一个接口，包含 alarm() 行为，Door 设计为单独的一个抽象类，包含 open 和 close 两种行为。再设计一个报警门继承 Door 类和实现 Alarm 接口。
+
+```java
+interface Alram {
+    void alarm();
+}
+ 
+abstract class Door {
+    void open();
+    void close();
+}
+ 
+class AlarmDoor extends Door implements Alarm {
+    void oepn() {
+      //....
+    }
+    void close() {
+      //....
+    }
+    void alarm() {
+      //....
+    }
+}
+```
+
+### java 接口
+
+在JAVA编程语言中是一个抽象类型，是抽象方法的集合，接口通常以interface来声明。一个类通过继承接口的方式，从而来**继承接口的抽象方法**。
+
+接口并不是类，编写接口的方式和类很相似，但是它们属于不同的概念。类描述对象的属性和方法。接口则包含类要实现的方法。
+
+除非实现接口的类是抽象类，否则该类要定义接口中的所有方法。
+
+接口无法被实例化，但是可以被实现。一个实现接口的类，必须实现接口内所描述的所有方法，否则就必须声明为抽象类。另外，在 Java 中，接口类型可用来声明一个变量，他们可以成为一个空指针，或是被绑定在一个以此接口实现的对象。
+
+**接口与类相似点：**
+
+- 一个接口可以有多个方法。
+- 接口文件保存在 .java 结尾的文件中，文件名使用接口名。
+- 接口的字节码文件保存在 .class 结尾的文件中。
+- 接口相应的字节码文件必须在与包名称相匹配的目录结构中。
+
+**接口与类的区别：**
+
+- 接口不能用于实例化对象。
+- 接口没有构造方法。
+- 接口中所有的方法必须是抽象方法，Java 8 之后 接口中可以使用 default 关键字修饰的非抽象方法。
+- 接口不能包含成员变量，除了 static 和 final 变量。
+- 接口不是被类继承了，而是要被类实现。
+- 接口支持多继承。
+
+### 接口特性
+
+- 接口中每一个方法也是隐式抽象的,接口中的方法会被隐式的指定为 **public abstract**（只能是 public abstract，其他修饰符都会报错）。
+- 接口中可以含有变量，但是接口中的变量会被隐式的指定为 **public static final** 变量（并且只能是 public，用 private 修饰会报编译错误）。
+- **接口中的方法是不能在接口中实现的，只能由实现接口的类来实现接口中的方法。**
+
+**抽象类和接口的区别**
+
+- \1. 抽象类中的方法可以有方法体，就是能实现方法的具体功能，但是接口中的方法不行。
+- \2. 抽象类中的成员变量可以是各种类型的，而接口中的成员变量只能是 **public static final** 类型的。
+- \3. 接口中不能含有静态代码块以及静态方法(用 static 修饰的方法)，而抽象类是可以有静态代码块和静态方法。
+- \4. 一个类只能继承一个抽象类，而一个类却可以实现多个接口。
+
+---
+
+接口的声明
+
+```java
+[可见度] interface 接口名称 [extends 其他的接口名] {
+        // 声明变量
+        // 抽象方法
+}
+```
+
+
+
+```java
+/* 文件名 : NameOfInterface.java */
+import java.lang.*;
+//引入包
+ 
+public interface NameOfInterface
+{
+   //任何类型 final, static 字段
+   //抽象方法
+}
+```
+
+- 接口是**隐式抽象**的，当声明一个接口的时候，不必使用**abstract**关键字。
+- 接口中每一个方法也是**隐式抽象**的，声明时同样不需要**abstract**关键字。
+- 接口中的方法**都是公有**的。
+
+#### 接口的继承
+
+一个接口能继承另一个接口，和类之间的继承方式比较相似。接口的继承使用extends关键字，子接口继承父接口的方法
+
+```java
+// 文件名: Sports.java
+public interface Sports
+{
+   public void setHomeTeam(String name);
+   public void setVisitingTeam(String name);
+}
+ 
+// 文件名: Football.java
+public interface Football extends Sports
+{
+   public void homeTeamScored(int points);
+   public void visitingTeamScored(int points);
+   public void endOfQuarter(int quarter);
+}
+ 
+// 文件名: Hockey.java
+public interface Hockey extends Sports
+{
+   public void homeGoalScored();
+   public void visitingGoalScored();
+   public void endOfPeriod(int period);
+   public void overtimePeriod(int ot);
+}
+```
+
+**多继承**
+
+在Java中，**类的多继承是不合法**，但**接口允许多继承**。
+
+在接口的多继承中extends关键字只需要使用一次，在其后跟着继承接口。
+
+```java
+public interface Hockey extends Sports, Event
+```
+
+**标记接口**
+
+最常用的继承接口是没有包含任何方法的接口。
+
+标记接口是没有任何方法和属性的接口.它仅仅表明它的类属于一个特定的类型,供其他代码来测试允许做一些事情。
+
+标记接口作用：简单形象的说就是给某个对象打个标（盖个戳），使对象拥有某个或某些特权。
+
+如:
+
+```java
+package java.util;
+public interface EventListener
+{}
+```
+
+标记接口主要用于以下两种目的：
+
+- 建立一个公共的父接口：
+
+  正如EventListener接口，这是由几十个其他接口扩展的Java API，你可以使用一个标记接口来建立一组接口的父接口。例如：当一个接口继承了EventListener接口，Java虚拟机(JVM)就知道该接口将要被用于一个事件的代理方案。
+
+- 向一个类添加数据类型：
+
+  这种情况是标记接口最初的目的，实现标记接口的类不需要定义任何接口方法(因为标记接口根本就没有方法)，但是该类通过多态性变成一个接口类型。
+
+  使用标记接口的唯一目的是使得可以用 **instanceof** 进行类型查询，例如：
+
+  ```java
+  if(obj instanceof Cloneable) {………} 
+  ```
+
+  
+
+---
+
+**总结笔记**
+
+1.接口可以多继承
+
+2.接口的方法声明必须是 public abstract 即便不写默认也是
+
+3.**接口里面不能包含方法具体实现**,**JDK1.8以后可以在接口内实现默认方法和静态方法**
+
+4.类实继承接口必须实现接口里申明的全部方法，除非该类是抽象类
+
+5.类里面可以声明 public static final 修饰的变量
+
+6.接口不能被实例化，但是可以被实现类创建
+
+---
+
+在 **JDK1.8**，**允许我们给接口添加两种非抽象的方法实现**：
+
+1、默认方法，添加 **default** 修饰即可；
+
+2、静态方法，使用 **static** 修饰；示例如下：
+
+```java
+interface Test{
+    //这个是默认方法
+    default String get(String aa){
+        System.out.println("我是jdk1.8默认实现方法...");
+        return "";
+    }   
+    //这个是静态方法    
+    static void staticmethod(){
+        System.out.println("我是静态方法");
+    }
+}
+```
+
+调用得话，静态方法只能通过接口名调用，不可以通过实现类的类名或者实现类的对象调用，default 方法只能通过接口实现类的对象来调用。
+
+---
+
+接口的成员特点：
+
+-  1、**成员变量**只能是常量，默认修饰符 **public static final**
+-  2、**成员方法**只能是抽象方法。默认修饰符 **public abstract**
+
+所以，Java 接口中，使用变量的时候，**变量必须被赋值**。
+
+```java
+//所以接口定义属性
+public interface People {
+    int age=10;
+    String name="输出名字"; // 接口里面定义的成员变量都是  public static final 修饰
+    public void eat();　　
+}
+```
+
+所有的变量必须给出初始值，且绝对不会被修改，因为隐藏的修饰符为 **public static final**。
+
+---
+
+接口类型可用来**声明一个变量**，他们可以成为一个空指针，或是被绑定在一个以此接口实现的对象。这其实是通过接口实现多态的关键。
+
+---
+
+```java
+public class InterfaceTest {
+    public static void main(String[] args) {
+        //后面加花括号这种写法，实际是new了一个实现接口的匿名类，开发人员需要在匿名类内部（花括号内）实现你那个接口。
+        INtf in =new INtf() {
+            @Override
+            public void func() {
+                System.out.println("这是override接口中方法的结果");
+            }
+        };
+        in.func();
+        INtf in2=new INtf_sub() {
+            @Override
+            public void func2() {
+                System.out.println("这是override接口中func2方法的结果");
+            }
+
+            @Override
+            public void func() {
+                System.out.println("这是override接口中func方法的结果2");
+            }
+        };
+        in2.func();
+        //in2.func2();
+        INtf_sub in3=new INtf_sub() {
+            @Override
+            public void func2() {
+                System.out.println("这是类型为INtf_sub，override接口中func2方法的结果");
+            }
+
+            @Override
+            public void func() {
+                System.out.println("这是类型为INtf_sub，override接口中func方法的结果2");
+            }
+        };
+        in3.func2();
+        in3.func();
+        // INtf in4=new Intf();报错
+    }
+}
+
+interface INtf{
+    String name="接口名字";
+    public void func();
+    public static void func_static(){
+        System.out.println("这是静态方法");
+    }
+}
+
+interface INtf_sub extends INtf{
+    public void func2();
+}
+```
+
+后面加花括号这种写法，实际是**new了一个实现接口的匿名类**，开发人员需要在匿名类内部（花括号内）实现你那个接口。
+
+实际上花括号里面的内容是:
+
+```java
+class do_INtf implements INtf{
+    public void func() {
+        System.out.println("这是定义类去实现接口INft方法");
+    }
+}
+```
+
+和
+
+```java
+class do_INft_sub implements INtf_sub{
+    public void func() {
+        System.out.println("这是定义类去实现接口INft_sub方法func");
+    }
+    public void func2(){
+        System.out.println("这是定义类去实现接口INft_sub方法func2");
+    }
+}
+```
+
+---
+
+默认方法,静态方法,抽象方法
+
+```java
+//定义一个接口
+
+public interface Inter {
+
+    void show(); //抽象方法   
+
+    default void method() { //默认方法
+        System.out.println("默认方法被实现了");    }
+
+    static void test(){ //静态方法
+        System.out.println("静态方法被实现了");    }
+}
+
+//定义接口的一个实现类
+
+public class Interlmpl implements Inter {
+    @Override    
+    public void show() {
+        System.out.println("show方法");    }
+}
+
+//定义测试类
+
+public class InterDemo {
+  public static void main(String[] args) {
+    Inter i = new Interlmpl();        
+    i.show();        //抽象方法强制被重写
+    i.method();      //默认方法不强制被重写，但可以被重写，重写时去掉default关键字        
+    Inter.test();   //静态方法只能通过接口名调用,不能通过实现类名或者对象名调用
+  }
+}
+```
+
+### java 枚举
+
+Java 枚举是一个特殊的类，一般表示一组常量，比如一年的 4 个季节，一年的 12 个月份，一个星期的 7 天，方向有东南西北等。
+
+Java 枚举类使用 enum 关键字来定义，各个常量使用逗号 **,** 来分割。
+
+```java
+enum Color 
+{ 
+    RED, GREEN, BLUE; 
+} 
+```
+
+- values() 返回枚举类中所有的值。
+- ordinal()方法可以找到每个枚举常量的索引，就像数组索引一样。
+- valueOf()方法返回指定字符串值的枚举常量。
+
+**枚举类成员**
+
+枚举跟普通类一样可以用自己的**变量**、**方法**和**构造函数**，构造函数只能使用 private 访问修饰符，所以外部无法调用。
+
+枚举既可以包含具体方法，也可以包含抽象方法。 如果枚举类具有抽象方法，则枚举类的每个实例都必须实现它。
+
+```java
+enum Color 
+{ 
+    RED, GREEN, BLUE; 
+  
+    // 构造函数
+    private Color() 
+    { 
+        System.out.println("Constructor called for : " + this.toString()); 
+    } 
+  
+    public void colorInfo() 
+    { 
+        System.out.println("Universal Color"); 
+    } 
+} 
+  
+public class Test 
+{     
+    // 输出
+    public static void main(String[] args) 
+    { 
+        Color c1 = Color.RED; 
+        System.out.println(c1); 
+        c1.colorInfo(); 
+    } 
+}
+```
+
+枚举类中的抽象方法实现，需要枚举类中的**每个对象都对其进行实现**。
+
+```java
+enum Color{
+    RED{
+        public String getColor(){//枚举对象实现抽象方法
+            return "红色";
+        }
+    },
+    GREEN{
+        public String getColor(){//枚举对象实现抽象方法
+            return "绿色";
+        }
+    },
+    BLUE{
+        public String getColor(){//枚举对象实现抽象方法
+            return "蓝色";
+        }
+    };
+    public abstract String getColor();//定义抽象方法
+}
+
+public class Test{
+    public static void main(String[] args) {
+        for (Color c:Color.values()){
+            System.out.print(c.getColor() + "、");
+        }
+    }
+}
+```
+
+### java 包（package）
+
+**包的作用**
+
+- 1、把功能相似或相关的类或接口组织在同一个包中，方便类的查找和使用。
+- 2、如同文件夹一样，包也采用了树形目录的存储方式。同一个包中的类名字是不同的，不同的包中的类的名字是可以相同的，当同时调用两个不同包中相同类名的类时，应该加上包名加以区别。因此，包可以避免名字冲突。
+- 3、包也限定了访问权限，拥有包访问权限的类才能访问某个包中的类。
+
+Java 使用包（package）这种机制是为了防止命名冲突，访问控制，提供搜索和定位类（class）、接口、枚举（enumerations）和注释（annotation）等。
+
+一个包（package）可以定义为一组相互联系的类型（类、接口、枚举和注释），为这些类型提供访问保护和命名空间管理的功能。
+
+以下是一些 Java 中的包：
+
+- **java.lang**-打包基础的类
+- **java.io**-包含输入输出功能的函数
+
+包创建了新的**命名空间（namespace）**，所以不会跟其他包中的任何名字产生命名冲突。使用包这种机制，更容易实现访问控制，并且让定位相关类更加简单。
+
+```java
+// 第一行非注释行是 package 语句
+package com.example;
+ 
+// import 语句引入其他包中的类
+import java.util.ArrayList;
+import java.util.List;
+ 
+// 类的定义
+public class MyClass {
+    // 类的成员和方法
+}
+```
+
+通常，一个公司使用它互联网域名的颠倒形式来作为它的包名.例如：互联网域名是 runoob.com，所有的包名都以 com.runoob 开头。包名中的每一个部分对应一个子目录。
+
+---
+
+并不要求 .class 文件的路径跟相应的 .java 的路径一样。你可以分开来安排源码和类的目录。
+
+```java
+<path-one>\sources\com\runoob\test\Runoob.java
+<path-two>\classes\com\runoob\test\Google.class
+```
+
+这样，你可以将你的类目录分享给其他的编程人员，而不用透露自己的源码。用这种方法管理源码和类文件可以让编译器和java 虚拟机（JVM）可以找到你程序中使用的所有类型。
+
+类目录的绝对路径叫做 **class path**。设置在系统变量 **CLASSPATH** 中。编译器和 java 虚拟机通过将 package 名字加到 class path 后来构造 .class 文件的路径。
+
+<path- two>\classes 是 class path，package 名字是 com.runoob.test,而编译器和 JVM 会在 <path-two>\classes\com\runoob\test 中找 .class 文件。
+
+一个 class path 可能会包含好几个路径，多路径应该用分隔符分开。默认情况下，编译器和 JVM 查找当前目录。JAR 文件按包含 Java 平台相关的类，所以他们的目录默认放在了 class path 中。
+
+---
+
+1.打包编译时，会自动创建包目录，不需要自己新建包名文件夹；
+
+2.当当前目录有多个java文件需要编译或打包编译时，**javac -d . \*.java** 指令可以给当前目录下的所有 java 文件根据程序中是否有包声明进行编译或打包编译。
+
+3.当类路径不在当前目录下时，需要用到 **java -cp ...**，如：**java -cp F:/javaweb2班/20160531 mypack1.java**。
+
+4.要清楚 java 虚拟机根据包声明包导入执行字节码文件的流程。
+
+```java
+package mypack;
+public class A {
+    String name;
+    int age;
+    public void setName(String _name){
+        this.name =_name;
+    }
+    public void setAge(int _age){
+        this.age = _age;
+    }
+    public String getName(){
+        return this.name;
+    }
+    public int getAge(){
+        return this.age;
+    }
+    public static void main(String[] args){
+        A a = new A();
+        //a.setName("zs");
+        a.name="zs";
+        a.setAge(18);
+        System.out.println(a.getName()+a.getAge());
+    }
+}
+```
+
+```cmd
+D:\test>javac -d . A.java
+D:\test>java mypack.A
+zs18
+```
+
+如果把mypack文件夹放在D:\Notebooks
+
+```
+D:\test>java -cp D:\Notebooks mypack.A
+zs18
+或者
+D:\test>java -classpath D:\Notebooks mypack.A
+zs18
+```
+
+-cp -classpath告诉启动器字节码文件.class在哪里.
+
+---
+
+### java 数据结构
+
+#### Java Vector 类
+
+```java
+import java.util.*;
+
+public class VectorDemo {
+
+   public static void main(String args[]) {
+      // initial size is 3, increment is 2
+      Vector v = new Vector(3, 2);
+      System.out.println("Initial size: " + v.size());
+      System.out.println("Initial capacity: " +
+      v.capacity());
+      v.addElement(new Integer(1));
+      v.addElement(new Integer(2));
+      v.addElement(new Integer(3));
+      v.addElement(new Integer(4));
+      System.out.println("Capacity after four additions: " +
+          v.capacity());
+
+      v.addElement(new Double(5.45));
+      System.out.println("Current capacity: " +
+      v.capacity());
+      v.addElement(new Double(6.08));
+      v.addElement(new Integer(7));
+      System.out.println("Current capacity: " +
+      v.capacity());
+      v.addElement(new Float(9.4));
+      v.addElement(new Integer(10));
+      System.out.println("Current capacity: " +
+      v.capacity());
+      v.addElement(new Integer(11));
+      v.addElement(new Integer(12));
+      System.out.println("First element: " +
+         (Integer)v.firstElement());
+      System.out.println("Last element: " +
+         (Integer)v.lastElement());
+      if(v.contains(new Integer(3)))
+         System.out.println("Vector contains 3.");
+      // enumerate the elements in the vector.
+      Enumeration vEnum = v.elements();
+      System.out.println("\nElements in vector:");
+      while(vEnum.hasMoreElements())
+         System.out.print(vEnum.nextElement() + " ");
+      System.out.println();
+   }
+}
+```
+
+#### Java Stack 类
+
+```java
+import java.util.*;
+ 
+public class StackDemo {
+ 
+    static void showpush(Stack<Integer> st, int a) {
+        st.push(new Integer(a));
+        System.out.println("push(" + a + ")");
+        System.out.println("stack: " + st);
+    }
+ 
+    static void showpop(Stack<Integer> st) {
+        System.out.print("pop -> ");
+        Integer a = (Integer) st.pop();
+        System.out.println(a);
+        System.out.println("stack: " + st);
+    }
+ 
+    public static void main(String args[]) {
+        Stack<Integer> st = new Stack<Integer>();
+        System.out.println("stack: " + st);
+        showpush(st, 42);
+        showpush(st, 66);
+        showpush(st, 99);
+        showpop(st);
+        showpop(st);
+        showpop(st);
+        try {
+            showpop(st);
+        } catch (EmptyStackException e) {
+            System.out.println("empty stack");
+        }
+    }
+}
+```
+
+
+
