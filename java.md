@@ -1543,7 +1543,10 @@ class AlarmDoor extends Door implements Alarm {
 
 除非实现接口的类是抽象类，否则该类要定义接口中的所有方法。
 
-接口无法被实例化，但是可以被实现。一个实现接口的类，必须实现接口内所描述的所有方法，否则就必须声明为抽象类。另外，在 Java 中，接口类型可用来声明一个变量，他们可以成为一个空指针，或是被绑定在一个以此接口实现的对象。
+接口无法被实例化，但是可以被实现。一个实现接口的类，必须实现接口内所描述的所有方法，否则就必须声明为抽象类。另外，**在 Java 中，接口类型可用来声明一个变量，他们可以成为一个空指针，或是被绑定在一个以此接口实现的对象。**
+
+- **接口、抽象类，不可以被new！**
+- 接口、抽象类可以理解成是模糊不定的东西，要使用它的特质必须要实例化，实例化不能直接通过new，而是通过实现接口方法、继承抽象类等。
 
 **接口与类相似点：**
 
@@ -1554,7 +1557,7 @@ class AlarmDoor extends Door implements Alarm {
 
 **接口与类的区别：**
 
-- 接口不能用于实例化对象。
+- **接口不能用于实例化对象。**
 - 接口没有构造方法。
 - 接口中所有的方法必须是抽象方法，Java 8 之后 接口中可以使用 default 关键字修饰的非抽象方法。
 - 接口不能包含成员变量，除了 static 和 final 变量。
@@ -1563,7 +1566,7 @@ class AlarmDoor extends Door implements Alarm {
 
 ### 接口特性
 
-- 接口中每一个方法也是隐式抽象的,接口中的方法会被隐式的指定为 **public abstract**（只能是 public abstract，其他修饰符都会报错）。
+- 接口中每一个方法也是**隐式抽象**的,接口中的方法会被隐式的指定为 **public abstract**（只能是 public abstract，其他修饰符都会报错）。
 - 接口中可以含有变量，但是接口中的变量会被隐式的指定为 **public static final** 变量（并且只能是 public，用 private 修饰会报编译错误）。
 - **接口中的方法是不能在接口中实现的，只能由实现接口的类来实现接口中的方法。**
 
@@ -1584,8 +1587,6 @@ class AlarmDoor extends Door implements Alarm {
         // 抽象方法
 }
 ```
-
-
 
 ```java
 /* 文件名 : NameOfInterface.java */
@@ -1675,7 +1676,6 @@ public interface EventListener
   if(obj instanceof Cloneable) {………} 
   ```
 
-  
 
 ---
 
@@ -1691,7 +1691,7 @@ public interface EventListener
 
 5.类里面可以声明 public static final 修饰的变量
 
-6.接口不能被实例化，但是可以被实现类创建
+6.**接口不能被实例化，但是可以被实现类创建**
 
 ---
 
@@ -1747,6 +1747,7 @@ public interface People {
 public class InterfaceTest {
     public static void main(String[] args) {
         //后面加花括号这种写法，实际是new了一个实现接口的匿名类，开发人员需要在匿名类内部（花括号内）实现你那个接口。
+        //这是将接口类型绑定在一个以此为接口实现的对象上了
         INtf in =new INtf() {
             @Override
             public void func() {
@@ -2140,6 +2141,259 @@ public class StackDemo {
     }
 }
 ```
+
+#### java Properties 类
+
+Properties 类常用于存储程序的配置信息，例如**数据库连接信息**、**日志输出配置**、**应用程序设置**等。使用Properties类，可以将这些信息存储在一个文本文件中，并在程序中读取这些信息。
+
+使用 Properties 类来读取和写入属性文件：
+
+import java.io.*;
+import java.util.Properties;
+
+public class PropertiesExample {
+    public static void main(String[] args) {
+        Properties prop = new Properties();
+
+```java
+    try {
+        // 读取属性文件
+        prop.load(new FileInputStream("config.properties"));
+
+        // 获取属性值
+        String username = prop.getProperty("username");
+        String password = prop.getProperty("password");
+
+        // 输出属性值
+        System.out.println("username: " + username);
+        System.out.println("password: " + password);
+
+        // 修改属性值
+        prop.setProperty("username", "newUsername");
+        prop.setProperty("password", "newPassword");
+
+        // 保存属性到文件
+        prop.store(new FileOutputStream("config.properties"), null);
+
+    } catch (IOException ex) {
+        ex.printStackTrace();
+    }
+}
+```
+### java 集合框架
+
+Collection 接口又有 3 种子类型，List、Set 和 Queue，再下面是一些抽象类，最后是具体实现类，常用的有 [ArrayList](https://www.runoob.com/java/java-arraylist.html)、[LinkedList](https://www.runoob.com/java/java-linkedlist.html)、[HashSet](https://www.runoob.com/java/java-hashset.html)、LinkedHashSet、[HashMap](https://www.runoob.com/java/java-hashmap.html)、LinkedHashMap 等等。
+
+集合框架是一个用来代表和操纵集合的统一架构。所有的集合框架都包含如下内容：
+
+- 
+
+  **接口：**是代表集合的抽象数据类型。例如 Collection、List、Set、Map 等。之所以定义多个接口，是为了以不同的方式操作集合对象
+
+- **实现（类）：**是集合接口的具体实现。从本质上讲，它们是可重复使用的数据结构，例如：ArrayList、LinkedList、HashSet、HashMap。
+
+- **算法：**是实现集合接口的对象里的方法执行的一些有用的计算，例如：搜索和排序，这些算法实现了多态，那是因为相同的方法可以在相似的接口上有着不同的实现。
+
+[各种详情](https://www.runoob.com/java/java-collections.html)
+
+---
+
+#### 迭代器 Iterator
+
+它提供了一种统一的方式来访问集合中的元素，而不需要了解底层集合的具体实现细节。
+
+迭代器接口定义了几个方法，最常用的是以下三个：
+
+- **next()** - 返回迭代器的下一个元素，并将迭代器的指针移到下一个位置。
+- **hasNext()** - 用于判断集合中是否还有下一个元素可以访问。
+- **remove()** - 从集合中删除迭代器最后访问的元素（可选操作）.
+
+```java
+// 引入 ArrayList 和 Iterator 类
+import java.util.ArrayList;
+import java.util.Iterator;
+
+public class RunoobTest {
+    public static void main(String[] args) {
+
+        // 创建集合
+        ArrayList<String> sites = new ArrayList<String>();
+        sites.add("Google");
+        sites.add("Runoob");
+        sites.add("Taobao");
+        sites.add("Zhihu");
+
+        // 获取迭代器
+        Iterator<String> it = sites.iterator();
+
+        // 输出集合中的所有元素
+        while(it.hasNext()) {
+            System.out.println(it.next());
+        }
+    }
+}
+```
+
+删除元素
+
+要删除集合中的元素可以使用 remove() 方法。
+
+以下实例我们删除集合中小于 10 的元素：
+
+```java
+// 引入 ArrayList 和 Iterator 类
+import java.util.ArrayList;
+import java.util.Iterator;
+
+public class RunoobTest {
+    public static void main(String[] args) {
+        ArrayList<Integer> numbers = new ArrayList<Integer>();
+        numbers.add(12);
+        numbers.add(8);
+        numbers.add(2);
+        numbers.add(23);
+        Iterator<Integer> it = numbers.iterator();
+        while(it.hasNext()) {
+            Integer i = it.next();
+            if(i < 10) {  
+                it.remove();  // 删除小于 10 的元素
+            }
+        }
+        System.out.println(numbers);
+    }
+}
+```
+
+
+
+
+
+
+
+
+
+---
+
+**遍历 ArrayList**
+
+```java
+import java.util.*;
+ 
+public class Test{
+ public static void main(String[] args) {
+     List<String> list=new ArrayList<String>();
+     list.add("Hello");
+     list.add("World");
+     list.add("HAHAHAHA");
+     //第一种遍历方法使用 For-Each 遍历 List
+     for (String str : list) {            //也可以改写 for(int i=0;i<list.size();i++) 这种形式
+        System.out.println(str);
+     }
+ 
+     //第二种遍历，把链表变为数组相关的内容进行遍历
+     String[] strArray=new String[list.size()];
+     list.toArray(strArray);
+     for(int i=0;i<strArray.length;i++) //这里也可以改写为  for(String str:strArray) 这种形式
+     {
+        System.out.println(strArray[i]);
+     }
+     
+    //第三种遍历 使用迭代器进行相关遍历
+     
+     Iterator<String> ite=list.iterator();
+     while(ite.hasNext())//判断下一个元素之后有值
+     {
+         System.out.println(ite.next());
+     }
+ }
+}
+```
+
+**遍历 Map**
+
+```java
+import java.util.*;
+ 
+public class Test{
+     public static void main(String[] args) {
+      Map<String, String> map = new HashMap<String, String>();
+      map.put("1", "value1");
+      map.put("2", "value2");
+      map.put("3", "value3");
+      
+      //第一种：普遍使用，二次取值
+      System.out.println("通过Map.keySet遍历key和value：");
+      for (String key : map.keySet()) {
+       System.out.println("key= "+ key + " and value= " + map.get(key));
+      }
+      
+      //第二种
+      System.out.println("通过Map.entrySet使用iterator遍历key和value：");
+      Iterator<Map.Entry<String, String>> it = map.entrySet().iterator();
+      while (it.hasNext()) {
+       Map.Entry<String, String> entry = it.next();
+       System.out.println("key= " + entry.getKey() + " and value= " + entry.getValue());
+      }
+      
+      //第三种：推荐，尤其是容量大时
+      System.out.println("通过Map.entrySet遍历key和value");
+      for (Map.Entry<String, String> entry : map.entrySet()) {
+       System.out.println("key= " + entry.getKey() + " and value= " + entry.getValue());
+      }
+    
+      //第四种
+      System.out.println("通过Map.values()遍历所有的value，但不能遍历key");
+      for (String v : map.values()) {
+       System.out.println("value= " + v);
+      }
+     }
+}
+```
+
+**一些总结:**
+
+Java集合框架为程序员提供了预先包装的**数据结构和算法**来操纵他们。
+
+**集合是一个对象**，可容纳其他对象的引用。集合接口声明对每一种类型的集合可以执行的操作。
+
+集合框架的类和接口均在java.util包中。
+
+**任何对象加入集合类后，自动转变为Object类型，所以在取出的时候，需要进行强制类型转换。**
+
+任何对象没有使用泛型之前会自动转换Object类型，使用泛型之后不用强制转换。
+
+**ArrayList 和 LinkedList 的区别**
+
++ ArrayList 是 List 接口的一种实现，它是使用数组来实现的。
++ LinkedList 是 List 接口的一种实现，它是使用链表来实现的。
++ ArrayList 遍历和查找元素比较快。LinkedList 遍历和查找元素比较慢。
++ ArrayList 添加、删除元素比较慢。LinkedList 添加、删除元素比较快。
+
+---
+
+在遍历 key-value 的时候使用 entrySet() 是比较合理的选择。
+
+---
+
+Set的**检索效率**相对于List来说较高，**其原因在于Set是基于哈希表或树等数据结构来存储元素的。在查找元素时，Set会先计算元素的哈希值或使用比较器进行比较，然后再根据哈希值或比较结果在数据结构中查找元素。这种方式的时间复杂度为O(1)或O(logN)**，因此Set的检索效率相对较高。
+
+而List的检索效率相对于Set来说较低，其原因在于List是基于数组或链表等数据结构来存储元素的。在查找元素时，List需要依次遍历元素，直到找到目标元素或遍历完所有元素。这种方式的时间复杂度为O(N)，因此List的检索效率相对较低。
+
+容易弄混的地方在于随机访问元素和检索元素，这两者不是一回事。
+
+**随机访问元素**是指可以通过索引或偏移量来访问集合中的元素，例如使用 ArrayList 中的 get(int index) 方法。随机访问元素的效率通常非常高，因为它可以直接访问内部数据结构中的元素，时间复杂度为O(1)。
+
+**检索元素**是指在集合中查找特定元素的过程，例如使用 Set 中的 contains(Object o) 方法。检索元素的效率取决于集合的实现方式和元素数量，通常需要遍历集合中的所有元素来查找目标元素，时间复杂度为O(N)。
+
+再补充一点，于大规模数据，Set的内存占用较大，而ArrayList的性能较优。
+
+---
+
+
+
+
+
+
 
 
 
